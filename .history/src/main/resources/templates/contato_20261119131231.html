@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <title>Agenda Fácil</title>
+ 
+    <!-- Bootstrap: biblioteca CSS para criar páginas responsivas. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+ 
+    <style>
+        body {
+            background-color: #f4f6fa;
+            font-family: Arial, sans-serif;
+        }
+ 
+        .navbar {
+            background: linear-gradient(135deg, #3157c8, #587ce8);
+        }
+ 
+        .card {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+        }
+ 
+        .titulo {
+            color: #26345b;
+            font-weight: 700;
+        }
+ 
+        .btn-primary {
+            background-color: #3157c8;
+            border: none;
+        }
+ 
+        .btn-primary:hover {
+            background-color: #2545a7;
+        }
+ 
+        .table th {
+            color: #5b6477;
+            font-size: 14px;
+        }
+ 
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+ 
+<body>
+ 
+    <!-- Barra superior do sistema. -->
+    <nav class="navbar navbar-dark mb-4">
+        <div class="container">
+ 
+            <span class="navbar-brand fw-bold">
+                📒 Agenda Fácil
+            </span>
+ 
+            <span class="text-white small">
+                Seus contatos organizados
+            </span>
+ 
+        </div>
+    </nav>
+ 
+    <main class="container pb-5">
+ 
+        <!-- Cabeçalho da página. -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+ 
+            <div>
+                <h2 class="titulo mb-1">Meus contatos</h2>
+                <p class="text-secondary mb-0">
+                    Gerencie seus contatos em um só lugar.
+                </p>
+            </div>
+ 
+            <a th:href="@{/contatos/novo}" class="btn btn-primary px-4">
+                + Novo contato
+            </a>
+ 
+        </div>
+ 
+        <!-- Cartão com o total de contatos. -->
+        <div class="card mb-4">
+            <div class="card-body">
+ 
+                <span class="text-secondary">Contatos cadastrados</span>
+ 
+                <h3 class="fw-bold mb-0" th:text="${total}">0</h3>
+ 
+            </div>
+        </div>
+ 
+        <!-- Tabela de contatos. -->
+        <div class="card">
+ 
+            <div class="card-body">
+ 
+                <div class="table-responsive">
+ 
+                    <table class="table table-hover align-middle">
+ 
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Telefone</th>
+                                <th>E-mail</th>
+                                <th class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+ 
+                        <tbody>
+ 
+                            <!-- th:each percorre a lista de contatos. -->
+                            <tr th:each="contato : ${contatos}">
+ 
+                                <td th:text="${contato.nome}"></td>
+ 
+                                <td th:text="${contato.telefone}"></td>
+ 
+                                <td th:text="${contato.email}"></td>
+ 
+                                <td class="text-end">
+ 
+                                    <!-- Link para editar o contato. -->
+                                    <a th:href="@{/contatos/editar/{id}(id=${contato.id})}"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Editar
+                                    </a>
+ 
+                                    <!-- Formulário POST para excluir. -->
+                                    <form th:action="@{/contatos/excluir/{id}(id=${contato.id})}"
+                                          method="post"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Deseja realmente excluir este contato?')">
+ 
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger">
+                                            Excluir
+                                        </button>
+ 
+                                    </form>
+ 
+                                </td>
+ 
+                            </tr>
+ 
+                            <!-- Mensagem quando não existem contatos. -->
+                            <tr th:if="${#lists.isEmpty(contatos)}">
+ 
+                                <td colspan="4" class="text-center text-secondary py-5">
+                                    Nenhum contato cadastrado ainda.
+                                    <br>
+                                    Clique em "Novo contato" para começar!
+                                </td>
+ 
+                            </tr>
+ 
+                        </tbody>
+ 
+                    </table>
+ 
+                </div>
+ 
+            </div>
+ 
+        </div>
+ 
+        <p class="text-center text-secondary small mt-4">
+            Agenda Fácil • Organize seus contatos com simplicidade.
+        </p>
+ 
+    </main>
+ 
+</body>
+</html>
